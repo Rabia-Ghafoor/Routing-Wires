@@ -38,25 +38,19 @@ public class Routing {
         return false;
     }
 
-    private static Wire constructPath(int id, Coord start, Coord end, HashMap<Coord, Coord> pathMap) {
-        ArrayList<Coord> points = new ArrayList<>();
-        Coord current = end;
-        while (!current.equals(start)) {
-            points.add(current);
+    private static Wire pathFind(Board board, Endpoints endpts) {
+        HashMap<Coord, Coord> pathMap = new HashMap<>();
+        if (!bfs(board, endpts.start, endpts.end, pathMap)) {
+            return null;
+        }
+        Wire wire = new Wire(endpts.id);
+        Coord current = endpts.end;
+        while (!current.equals(endpts.start)) {
+            wire.add(current);
             current = pathMap.get(current);
         }
-        points.add(start);
-        Collections.reverse(points);
-        return new Wire(id, points);
-    }
-
-    public static Wire pathFind(Board board, Endpoints endpts) {
-    Coord start = endpts.start;
-            Coord end = endpts.end;
-            HashMap<Coord, Coord> pathMap = new HashMap<>();
-            if (!bfs(board, start, end, pathMap)) {
-                return null;
-            }
-            return constructPath(endpts.id, start, end, pathMap);
+        wire.add(endpts.start);
+        Collections.reverse(wire.getPoints());
+        return wire;
     }
 }
