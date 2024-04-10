@@ -11,6 +11,13 @@ public class StudentTest {
         });
     }
 
-    // your tests go here
+    @Test
+    public void testWire1() {
+        assertTimeout(Duration.ofMillis(1000), () -> {
+            Utilities.test("./test/inputs/wire1.in");
+        });
+    }
+
+
 
 }
